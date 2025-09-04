@@ -83,7 +83,7 @@ const apps: AppsData[] = [
     minHeight: 200,
     x: 40,
     y: -10,
-    img: "img/icons/launchpad/cube.png",
+    img: "img/icons/cube.png",
     content: <Safari initialURL="https://williamkieuu-devops.cloud/old" />
   },
   {

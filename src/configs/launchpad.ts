@@ -5,7 +5,7 @@ const launchpadApps: LaunchpadData[] = [
   {
     id: "old-portfolio",
     title: "Old Portfolio",
-    img: "img/icons/old-portfolio.png",
+    img: "img/icons/launchpad/old-portfolio.png",
     link: "/old/"
   },
 
