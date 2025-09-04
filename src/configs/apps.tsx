@@ -74,6 +74,19 @@ const apps: AppsData[] = [
     content: <Terminal />
   },
   {
+    id: "old-portfolio",
+    title: "Old Portfolio",
+    desktop: true,
+    width: 1024,
+    height: 640,
+    minWidth: 375,
+    minHeight: 200,
+    x: 40,
+    y: -10,
+    img: "img/icons/launchpad/cube.png",
+    content: <Safari initialURL="https://williamkieuu-devops.cloud/old" />
+  },
+  {
     id: "github",
     title: "Github",
     desktop: false,

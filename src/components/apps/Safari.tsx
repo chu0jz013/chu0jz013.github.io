@@ -10,6 +10,7 @@ interface SafariState {
 
 interface SafariProps {
   width?: number;
+  initialURL?: string;
 }
 
 interface NavProps {
@@ -131,11 +132,11 @@ const NoInternetPage = () => {
   );
 };
 
-const Safari = ({ width }: SafariProps) => {
+const Safari = ({ width, initialURL }: SafariProps) => {
   const wifi = useStore((state) => state.wifi);
   const [state, setState] = useState<SafariState>({
-    goURL: "",
-    currentURL: ""
+    goURL: initialURL || "",
+    currentURL: initialURL || ""
   });
 
   const setGoURL = (url: string) => {
