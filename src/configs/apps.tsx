@@ -1,4 +1,5 @@
 import { appBarHeight } from "~/utils";
+import { BANANAS_SELLS_URL, RESUME_AS_CODE_URL } from "~/utils/constants";
 import type { AppsData } from "~/types";
 
 const apps: AppsData[] = [
@@ -15,8 +16,6 @@ const apps: AppsData[] = [
     width: 860 * 1.3,
     height: 500 * 1.5,
     show: true,
-    x: -200,
-    y: -500,
     img: "img/icons/bear.png",
     content: <Bear />
   },
@@ -71,6 +70,8 @@ const apps: AppsData[] = [
     id: "terminal",
     title: "Terminal",
     desktop: true,
+    width: 960,
+    height: 600,
     img: "img/icons/terminal.png",
     content: <Terminal />
   },
@@ -84,22 +85,36 @@ const apps: AppsData[] = [
     minHeight: 200,
     x: 200,
     y: 100,
-    show: true,
-    img: "img/icons/cube.png",
+    show: false,
+    img: "img/icons/launchpad/old-portfolio.png",
     content: <Safari initialURL="https://williamkieuu-devops.cloud/old" />
   },
   {
-    id: "resume",
-    title: "Résumé",
+    id: "resume-as-code",
+    title: "Resume as Code",
     desktop: true,
-    width: 860,
+    width: 1024,
     height: 640,
     minWidth: 375,
     minHeight: 200,
-    x: 20,
-    y: -10,
-    img: "img/icons/launchpad/resume.png",
-    content: <Resume />
+    x: 240,
+    y: 140,
+    img: "img/icons/launchpad/gungnir.png",
+    content: <Safari initialURL={RESUME_AS_CODE_URL} />
+  },
+  {
+    id: "bananas-sells-things",
+    title: "Bananas Sells Things",
+    desktop: true,
+    disabled: true,
+    width: 1024,
+    height: 640,
+    minWidth: 375,
+    minHeight: 200,
+    x: 280,
+    y: 180,
+    img: "img/icons/launchpad/meta.png",
+    content: <Safari initialURL={BANANAS_SELLS_URL} />
   },
   {
     id: "github",

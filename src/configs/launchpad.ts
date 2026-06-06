@@ -1,5 +1,5 @@
 import type { LaunchpadData } from "~/types";
-import { RESUME_URL } from "~/utils";
+import { RESUME_AS_CODE_URL } from "~/utils";
 
 const launchpadApps: LaunchpadData[] = [
   {
@@ -13,13 +13,14 @@ const launchpadApps: LaunchpadData[] = [
     id: "oh-vue-icons",
     title: "Oh, Vue Icons!",
     img: "img/icons/launchpad/oh-vue-icons.png",
-    link: "https://oh-vue-icons.js.org"
+    link: "https://oh-vue-icons.js.org",
+    disabled: true
   },
   {
     id: "resume",
     title: "Résumé",
-    img: "img/icons/launchpad/resume.png",
-    link: RESUME_URL
+    img: "img/icons/launchpad/gungnir.png",
+    link: RESUME_AS_CODE_URL
   }
 ];
 

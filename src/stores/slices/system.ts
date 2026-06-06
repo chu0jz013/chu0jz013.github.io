@@ -10,6 +10,7 @@ export interface SystemSlice {
   airdrop: boolean;
   fullscreen: boolean;
   toggleDark: () => void;
+  setDark: (v: boolean) => void;
   toggleWIFI: () => void;
   toggleBluetooth: () => void;
   toggleAirdrop: () => void;
@@ -18,13 +19,23 @@ export interface SystemSlice {
   setBrightness: (v: number) => void;
 }
 
-// Ensure dark mode class is applied on initial load
-if (typeof document !== "undefined") {
-  document.documentElement.classList.add("dark");
-}
+const prefersDark = () => {
+  if (typeof window === "undefined") return true;
+  return window.matchMedia("(prefers-color-scheme: dark)").matches;
+};
+
+const applyDarkClass = (dark: boolean) => {
+  if (typeof document === "undefined") return;
+  if (dark) document.documentElement.classList.add("dark");
+  else document.documentElement.classList.remove("dark");
+};
+
+// Apply initial theme based on device preference
+const initialDark = prefersDark();
+applyDarkClass(initialDark);
 
 export const createSystemSlice: StateCreator<SystemSlice> = (set) => ({
-  dark: true,
+  dark: initialDark,
   volume: 100,
   brightness: 80,
   wifi: true,
@@ -33,9 +44,13 @@ export const createSystemSlice: StateCreator<SystemSlice> = (set) => ({
   fullscreen: false,
   toggleDark: () =>
     set((state) => {
-      if (!state.dark) document.documentElement.classList.add("dark");
-      else document.documentElement.classList.remove("dark");
+      applyDarkClass(!state.dark);
       return { dark: !state.dark };
+    }),
+  setDark: (v) =>
+    set(() => {
+      applyDarkClass(v);
+      return { dark: v };
     }),
   toggleWIFI: () => set((state) => ({ wifi: !state.wifi })),
   toggleBluetooth: () => set((state) => ({ bluetooth: !state.bluetooth })),

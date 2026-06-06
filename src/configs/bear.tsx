@@ -1,5 +1,5 @@
 import type { BearData } from "~/types";
-import { RESUME_URL } from "~/utils/constants";
+import { RESUME_AS_CODE_URL } from "~/utils/constants";
 
 const bear: BearData[] = [
   {
@@ -55,7 +55,7 @@ const bear: BearData[] = [
         file: "markdown/resume.md",
         icon: "i-ri:gamepad-line",
         excerpt: "My resume",
-        link: RESUME_URL
+        link: RESUME_AS_CODE_URL
       }
     ]
   }

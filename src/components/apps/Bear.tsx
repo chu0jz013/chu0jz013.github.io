@@ -154,10 +154,7 @@ const cleanMarkdown = (text: string): string => {
   let cleaned = text.replace(/<!--([\s\S]*?)-->/g, "");
 
   // Remove "Connect with me" section (HTML heading to next <h3 or end)
-  cleaned = cleaned.replace(
-    /<h3[^>]*>\s*Connect with me:?[\s\S]*?(?=<h3[^>]*>|$)/gi,
-    ""
-  );
+  cleaned = cleaned.replace(/<h3[^>]*>\s*Connect with me:?[\s\S]*?(?=<h3[^>]*>|$)/gi, "");
 
   // Remove "Languages and Tools" section
   cleaned = cleaned.replace(
@@ -221,7 +218,7 @@ const Bear = () => {
     contentID: bear[0].md[0].id,
     contentURL: bear[0].md[0].file
   });
-  
+
   const [showSidebar, setShowSidebar] = useState(false);
   const [showMiddlebar, setShowMiddlebar] = useState(false);
 
@@ -261,17 +258,25 @@ const Bear = () => {
             className="group flex items-center space-x-2 px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200"
           >
             <div className="flex flex-col space-y-1">
-              <div className={`w-4 h-0.5 bg-gray-600 dark:bg-gray-300 transition-all duration-300 ${showSidebar ? 'rotate-45 translate-y-1.5' : ''}`}></div>
-              <div className={`w-4 h-0.5 bg-gray-600 dark:bg-gray-300 transition-all duration-300 ${showSidebar ? 'opacity-0' : ''}`}></div>
-              <div className={`w-4 h-0.5 bg-gray-600 dark:bg-gray-300 transition-all duration-300 ${showSidebar ? '-rotate-45 -translate-y-1.5' : ''}`}></div>
+              <div
+                className={`w-4 h-0.5 bg-gray-600 dark:bg-gray-300 transition-all duration-300 ${showSidebar ? "rotate-45 translate-y-1.5" : ""}`}
+              ></div>
+              <div
+                className={`w-4 h-0.5 bg-gray-600 dark:bg-gray-300 transition-all duration-300 ${showSidebar ? "opacity-0" : ""}`}
+              ></div>
+              <div
+                className={`w-4 h-0.5 bg-gray-600 dark:bg-gray-300 transition-all duration-300 ${showSidebar ? "-rotate-45 -translate-y-1.5" : ""}`}
+              ></div>
             </div>
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Menu</span>
+            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              Menu
+            </span>
           </button>
-          
+
           <div className="text-sm font-semibold text-gray-800 dark:text-gray-200">
             Bear
           </div>
-          
+
           <button
             onClick={() => {
               setShowMiddlebar(!showMiddlebar);
@@ -279,17 +284,26 @@ const Bear = () => {
             }}
             className="group flex items-center space-x-2 px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200"
           >
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Files</span>
+            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              Files
+            </span>
             <div className="flex flex-col space-y-1">
-              <div className={`w-4 h-0.5 bg-gray-600 dark:bg-gray-300 transition-all duration-300 ${showMiddlebar ? 'rotate-45 translate-y-1.5' : ''}`}></div>
-              <div className={`w-4 h-0.5 bg-gray-600 dark:bg-gray-300 transition-all duration-300 ${showMiddlebar ? 'opacity-0' : ''}`}></div>
-              <div className={`w-4 h-0.5 bg-gray-600 dark:bg-gray-300 transition-all duration-300 ${showMiddlebar ? '-rotate-45 -translate-y-1.5' : ''}`}></div>
+              <div
+                className={`w-4 h-0.5 bg-gray-600 dark:bg-gray-300 transition-all duration-300 ${showMiddlebar ? "rotate-45 translate-y-1.5" : ""}`}
+              ></div>
+              <div
+                className={`w-4 h-0.5 bg-gray-600 dark:bg-gray-300 transition-all duration-300 ${showMiddlebar ? "opacity-0" : ""}`}
+              ></div>
+              <div
+                className={`w-4 h-0.5 bg-gray-600 dark:bg-gray-300 transition-all duration-300 ${showMiddlebar ? "-rotate-45 -translate-y-1.5" : ""}`}
+              ></div>
             </div>
           </button>
         </div>
       </div>
-      <div className={`
-        ${showSidebar ? 'block' : 'hidden'} 
+      <div
+        className={`
+        ${showSidebar ? "block" : "hidden"} 
         md:block 
         absolute md:relative 
         top-16 md:top-0 
@@ -300,11 +314,13 @@ const Bear = () => {
         overflow-auto bg-gray-700
         shadow-xl md:shadow-none
         rounded-r-xl md:rounded-none
-      `}>
+      `}
+      >
         <Sidebar cur={state.curSidebar} setMidBar={setMidBar} />
       </div>
-      <div className={`
-        ${showMiddlebar ? 'block' : 'hidden'} 
+      <div
+        className={`
+        ${showMiddlebar ? "block" : "hidden"} 
         md:block 
         absolute md:relative 
         top-16 md:top-0 
@@ -316,7 +332,8 @@ const Bear = () => {
         border-r border-gray-300
         shadow-xl md:shadow-none
         rounded-r-xl md:rounded-none
-      `}>
+      `}
+      >
         <Middlebar
           items={state.midbarList}
           cur={state.curMidbar}

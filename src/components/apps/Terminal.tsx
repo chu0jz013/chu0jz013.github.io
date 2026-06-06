@@ -105,7 +105,8 @@ export default class Terminal extends React.Component<{}, TerminalState> {
       ls: this.ls,
       cat: this.cat,
       clear: this.clear,
-      help: this.help
+      help: this.help,
+      neofetch: this.neofetch
     };
   }
 
@@ -236,6 +237,9 @@ export default class Terminal extends React.Component<{}, TerminalState> {
           <span text-red-400>help</span> - Display this help menu
         </li>
         <li>
+          <span text-red-400>neofetch</span> - Display system info (portfolio edition)
+        </li>
+        <li>
           <span text-red-400>rm -rf /</span> - :)
         </li>
         <li>
@@ -247,6 +251,125 @@ export default class Terminal extends React.Component<{}, TerminalState> {
       </ul>
     );
     this.generateResultRow(this.curInputTimes, help);
+  };
+
+  neofetch = () => {
+    // canonical neofetch macOS palette: set_colors 2 3 1 1 5 4
+    // → green, yellow, red, red, magenta, blue (top-to-bottom of apple)
+    const logo: [string, string][] = [
+      ["text-green-400", "                     ..'"],
+      ["text-green-400", "                 ,xNMM."],
+      ["text-green-400", "               .OMMMMo"],
+      ["text-green-400", '               lMM"'],
+      ["text-green-400", "     .;loddo:.  .olloddol;."],
+      ["text-yellow-400", "   cKMMMMMMMMMMNWMMMMMMMMMM0:"],
+      ["text-red-500", " .KMMMMMMMMMMMMMMMMMMMMMMMWd."],
+      ["text-red-500", " XMMMMMMMMMMMMMMMMMMMMMMMX."],
+      ["text-red-500", ";MMMMMMMMMMMMMMMMMMMMMMMM:"],
+      ["text-red-500", ":MMMMMMMMMMMMMMMMMMMMMMMM:"],
+      ["text-fuchsia-500", ".MMMMMMMMMMMMMMMMMMMMMMMMX."],
+      ["text-fuchsia-500", " kMMMMMMMMMMMMMMMMMMMMMMMMWd."],
+      ["text-blue-500", " 'XMMMMMMMMMMMMMMMMMMMMMMMMMMk"],
+      ["text-blue-500", "  'XMMMMMMMMMMMMMMMMMMMMMMMMK."],
+      ["text-blue-500", "    kMMMMMMMMMMMMMMMMMMMMMMd"],
+      ["text-blue-500", "     ;KMMMMMMMWXXWMMMMMMMk."],
+      ["text-blue-500", '       "cooc*"    "*coo\'"']
+    ];
+
+    const TOTAL_GIB = 128;
+    let memory = `enough / ${TOTAL_GIB.toFixed(2)} GiB`;
+    try {
+      const m = (performance as any)?.memory?.usedJSHeapSize;
+      if (typeof m === "number" && m > 0) {
+        const usedGiB = m / 1024 / 1024 / 1024;
+        const pct = Math.round((usedGiB / TOTAL_GIB) * 100);
+        memory = `${usedGiB.toFixed(2)} GiB / ${TOTAL_GIB.toFixed(2)} GiB (${pct}%)`;
+      }
+    } catch {
+      // non-Chrome browsers: keep fallback
+    }
+
+    const info: [string, string][] = [
+      ["OS", "macOS Tahoe 26.5.1 (25F80) arm64"],
+      ["Host", "MacBook Pro (14-inch, 2021)"],
+      ["Kernel", "Darwin 25.5.0"],
+      ["Uptime", "∞"],
+      ["Packages", "169 (brew), 33 (brew-cask)"],
+      ["Shell", "zsh 5.9"],
+      ["Display", '3600x2338 @ 2x in 14", 120 Hz [Built-in]'],
+      ["WM", "Quartz Compositor 341.4.4"],
+      ["WM Theme", "Multicolor (Dark)"],
+      ["Theme", "Liquid Glass"],
+      ["Font", ".AppleSystemUIFont [System], Helvetica [User]"],
+      ["Cursor", "Fill - Black, Outline - White (32px)"],
+      ["Terminal", "Apple Terminal 470.2"],
+      ["Terminal Font", "JetBrainsMonoNF-Regular (16pt)"],
+      ["CPU", "Apple M1 Pro (10) @ 3.23 GHz"],
+      ["GPU", "Apple M1 Pro (16) @ 1.30 GHz [Integrated]"],
+      ["Memory", memory]
+    ];
+
+    const colors = [
+      "bg-black",
+      "bg-red-500",
+      "bg-green-500",
+      "bg-yellow-400",
+      "bg-blue-500",
+      "bg-fuchsia-500",
+      "bg-cyan-400",
+      "bg-white"
+    ];
+    const colorsBright = [
+      "bg-gray-500",
+      "bg-red-400",
+      "bg-green-400",
+      "bg-yellow-300",
+      "bg-blue-400",
+      "bg-fuchsia-400",
+      "bg-cyan-300",
+      "bg-gray-200"
+    ];
+
+    const block = (
+      <div className="flex gap-x-3 py-1">
+        <pre className="text-lg leading-tight m-0">
+          {logo.map(([color, text], i) => (
+            <span key={`neofetch-logo-${i}`} className={`${color} block`}>
+              {text}
+            </span>
+          ))}
+        </pre>
+        <div className="flex-1">
+          <div>
+            <span className="text-green-400 font-bold">chuoiz</span>
+            <span className="text-white">@</span>
+            <span className="text-green-400 font-bold">Williams-MBP</span>
+          </div>
+          <div className="text-white">-------------------</div>
+          {info.map(([k, v]) => (
+            <div key={`neofetch-${k}`}>
+              <span className="text-green-400 font-bold">{k}</span>
+              <span className="text-white">: {v}</span>
+            </div>
+          ))}
+          <div className="flex mt-2">
+            {colors.map((c, i) => (
+              <span key={`neofetch-color-${i}`} className={`inline-block w-4 h-3 ${c}`} />
+            ))}
+          </div>
+          <div className="flex">
+            {colorsBright.map((c, i) => (
+              <span
+                key={`neofetch-color-bright-${i}`}
+                className={`inline-block w-4 h-3 ${c}`}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+
+    this.generateResultRow(this.curInputTimes, block);
   };
 
   autoComplete = (text: string) => {

@@ -1,5 +1,5 @@
 import type { WebsitesData } from "~/types";
-import { WEBSITE_URL } from "~/utils/constants";
+import { BANANAS_SELLS_URL, RESUME_AS_CODE_URL, WEBSITE_URL } from "~/utils/constants";
 
 const websites: WebsitesData = {
   favorites: {
@@ -10,6 +10,20 @@ const websites: WebsitesData = {
         title: "Website",
         img: "img/sites/astral.svg",
         link: `${WEBSITE_URL}/old`,
+        inner: true
+      },
+      {
+        id: "resume-as-code",
+        title: "Resume as Code",
+        img: "img/sites/astral.svg",
+        link: RESUME_AS_CODE_URL,
+        inner: true
+      },
+      {
+        id: "bananas-sells-things",
+        title: "Bananas Sells Things",
+        img: "img/sites/astral.svg",
+        link: BANANAS_SELLS_URL,
         inner: true
       },
       {

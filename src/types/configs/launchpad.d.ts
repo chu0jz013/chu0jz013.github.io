@@ -3,4 +3,5 @@ export interface LaunchpadData {
   title: string;
   img: string;
   link: string;
+  disabled?: boolean;
 }

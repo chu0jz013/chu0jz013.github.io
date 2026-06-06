@@ -107,16 +107,32 @@ const Window = (props: WindowProps) => {
   const dockSize = useStore((state) => state.dockSize);
   const { winWidth, winHeight } = useWindowSize();
 
-  const initWidth = Math.min(winWidth, props.width || 640);
-  const initHeight = Math.min(winHeight, props.height || 400);
+  const isMobile = winWidth < 640;
+  // leave room for dock + top bar so the window never overlaps system chrome
+  const edgeMargin = isMobile ? 8 : 0;
+  const safeWidth = winWidth - edgeMargin * 2;
+  const safeHeight = winHeight - dockSize - minMarginY - edgeMargin * 2;
+
+  const initWidth = Math.min(safeWidth, props.width || 640);
+  const initHeight = Math.min(safeHeight, props.height || 400);
+
+  // desktop only: small random jitter so simultaneous pop-ups don't stack on the
+  // exact same spot. mobile centers precisely — jitter on a 375px screen looks broken.
+  const JITTER = 50;
+  const jitter = () => (Math.random() * 2 - 1) * JITTER;
+  const offsetX = isMobile ? 0 : (props.x ?? jitter());
+  const offsetY = isMobile ? 0 : (props.y ?? jitter());
 
   const [state, setState] = useState<WindowState>({
     width: initWidth,
     height: initHeight,
     // "+ winWidth" because of the boundary for windows
-    x: winWidth + (winWidth - initWidth) / 2 + (props.x || 0),
-    // "- minMarginY" because of the boundary for windows
-    y: (winHeight - initHeight - dockSize - minMarginY) / 2 + (props.y || 0)
+    x: winWidth + (winWidth - initWidth) / 2 + offsetX,
+    // clamp ≥ minMarginY so the window never starts above the top bar
+    y: Math.max(
+      minMarginY,
+      (winHeight - initHeight - dockSize - minMarginY) / 2 + offsetY
+    )
   });
 
   useEffect(() => {

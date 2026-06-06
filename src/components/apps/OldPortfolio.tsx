@@ -13,5 +13,3 @@ const OldPortfolio = () => {
 };
 
 export default OldPortfolio;
-
-

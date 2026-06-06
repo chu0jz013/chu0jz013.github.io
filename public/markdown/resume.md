@@ -2,7 +2,7 @@
 
 - 📍 Hanoi, Vietnam
 - ☁️ DevOps Cloud Engineer
-- 📄 <a href="/resume/resume.pdf" target="_blank" rel="noopener noreferrer">Download Detail Resume (PDF)</a>
+- 📄 <a href="https://resumeascode.quachuoitrenmay.com/" target="_blank" rel="noopener noreferrer">View Detailed Resume (Resume as Code)</a>
 
 ### About Me
 

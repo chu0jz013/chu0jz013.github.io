@@ -4,6 +4,7 @@ export interface AppsData {
   desktop: boolean;
   img: string;
   show?: boolean;
+  disabled?: boolean;
   width?: number;
   height?: number;
   minWidth?: number;
