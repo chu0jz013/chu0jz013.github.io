@@ -10,3 +10,6 @@ export const RESUME_AS_CODE_URL = "https://resumeascode.quachuoitrenmay.com/";
 
 // Bananas Sells Things site (external)
 export const BANANAS_SELLS_URL = "https://bananasellsthings.quachuoitrenmay.com/";
+
+// ThinkPad Cluster (homelab) site (external)
+export const THINKPAD_CLUSTER_URL = "https://helloworld.quachuoitrenmay.com/";

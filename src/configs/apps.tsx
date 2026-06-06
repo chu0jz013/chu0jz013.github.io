@@ -1,5 +1,5 @@
 import { appBarHeight } from "~/utils";
-import { BANANAS_SELLS_URL, RESUME_AS_CODE_URL } from "~/utils/constants";
+import { BANANAS_SELLS_URL, RESUME_AS_CODE_URL, THINKPAD_CLUSTER_URL } from "~/utils/constants";
 import type { AppsData } from "~/types";
 
 const apps: AppsData[] = [
@@ -116,6 +116,19 @@ const apps: AppsData[] = [
     y: 180,
     img: "img/icons/launchpad/meta.png",
     content: <Safari initialURL={BANANAS_SELLS_URL} />
+  },
+  {
+    id: "thinkpad-cluster",
+    title: "ThinkPad Cluster",
+    desktop: true,
+    width: 1024,
+    height: 640,
+    minWidth: 375,
+    minHeight: 200,
+    x: 0,
+    y: 0,
+    img: "img/icons/launchpad/k8s.svg",
+    content: <Safari initialURL={THINKPAD_CLUSTER_URL} />
   },
   {
     id: "github",
