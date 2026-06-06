@@ -23,6 +23,7 @@ const apps: AppsData[] = [
     id: "typora",
     title: "Typora",
     desktop: true,
+    disabled: true,
     width: 600,
     height: 580,
     y: -20,
