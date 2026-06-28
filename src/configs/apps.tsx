@@ -1,5 +1,5 @@
 import { appBarHeight } from "~/utils";
-import { BANANAS_SELLS_URL, RESUME_AS_CODE_URL, THINKPAD_CLUSTER_URL } from "~/utils/constants";
+import { BANANAS_SELLS_URL, RESUME_AS_CODE_URL, THINKPAD_CLUSTER_URL, WEBSITE_URL } from "~/utils/constants";
 import type { AppsData } from "~/types";
 
 const apps: AppsData[] = [
@@ -88,7 +88,7 @@ const apps: AppsData[] = [
     y: 100,
     show: false,
     img: "img/icons/launchpad/old-portfolio.png",
-    content: <Safari initialURL="/old/index.html" />
+    content: <Safari initialURL={`${WEBSITE_URL}/old`} />
   },
   {
     id: "resume-as-code",
