@@ -19,19 +19,13 @@ export interface SystemSlice {
   setBrightness: (v: number) => void;
 }
 
-const prefersDark = () => {
-  if (typeof window === "undefined") return true;
-  return window.matchMedia("(prefers-color-scheme: dark)").matches;
-};
-
 const applyDarkClass = (dark: boolean) => {
   if (typeof document === "undefined") return;
   if (dark) document.documentElement.classList.add("dark");
   else document.documentElement.classList.remove("dark");
 };
 
-// Apply initial theme based on device preference
-const initialDark = prefersDark();
+const initialDark = false;
 applyDarkClass(initialDark);
 
 export const createSystemSlice: StateCreator<SystemSlice> = (set) => ({
