@@ -88,7 +88,7 @@ const apps: AppsData[] = [
     y: 100,
     show: false,
     img: "img/icons/launchpad/old-portfolio.png",
-    content: <Safari initialURL="https://williamkieuu-devops.cloud/old" />
+    content: <Safari initialURL="/old/index.html" />
   },
   {
     id: "resume-as-code",

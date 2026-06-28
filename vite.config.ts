@@ -15,6 +15,10 @@ export default defineConfig({
       dirs: ["src/hooks", "src/stores", "src/components/**"]
     })
   ],
+  build: {
+    outDir: "docs",
+    emptyOutDir: true
+  },
   resolve: {
     alias: {
       "~/": `${path.resolve(__dirname, "src")}/`

@@ -6,7 +6,7 @@ Project-specific guidance for Claude Code working in this repo. Complements (doe
 
 A **macOS-style portfolio** for **Nam Hai (William) Kieu / `chu0jz013`** — DevOps & Cloud Engineer based in Hanoi.
 
-- Deployed at <https://williamkieuu-devops.cloud> (also `chu0jz013.github.io`).
+- Deployed at <https://sre.quachuoitrenmay.com> (also `chu0jz013.github.io`).
 - Forked / adapted from [Renovamen/playground-macos](https://github.com/Renovamen/playground-macos).
 - Renders a fake macOS desktop in the browser: dock, top bar, launchpad, spotlight, and movable/resizable app windows.
 

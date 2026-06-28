@@ -3,7 +3,7 @@ export const minMarginX = 100;
 export const appBarHeight = 24; // app window's title bar height
 
 // Website URL
-export const WEBSITE_URL = "https://williamkieuu-devops.cloud";
+export const WEBSITE_URL = "https://sre.quachuoitrenmay.com";
 
 // Resume-as-Code site (external)
 export const RESUME_AS_CODE_URL = "https://resumeascode.quachuoitrenmay.com/";

@@ -1,0 +1,134 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 512 512"
+  role="img"
+  aria-label="ThinkPad cluster — kubectl get nodes"
+>
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3a3f4a" />
+      <stop offset="55%" stop-color="#1d2129" />
+      <stop offset="100%" stop-color="#0c0e13" />
+    </linearGradient>
+    <linearGradient id="topSheen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.14" />
+      <stop offset="40%" stop-color="#ffffff" stop-opacity="0" />
+    </linearGradient>
+    <radialGradient id="bottomGlow" cx="0.5" cy="1" r="0.7">
+      <stop offset="0%" stop-color="#4ade80" stop-opacity="0.08" />
+      <stop offset="100%" stop-color="#4ade80" stop-opacity="0" />
+    </radialGradient>
+
+    <linearGradient id="gScreen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0d2a1f" />
+      <stop offset="100%" stop-color="#04140e" />
+    </linearGradient>
+    <linearGradient id="gKeyboard" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1f2533" />
+      <stop offset="100%" stop-color="#0e1219" />
+    </linearGradient>
+
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2.5" result="b" />
+      <feMerge>
+        <feMergeNode in="b" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+    <filter id="softShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="10" />
+    </filter>
+
+    <clipPath id="squircle">
+      <rect width="512" height="512" rx="115" ry="115" />
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#squircle)">
+    <rect width="512" height="512" fill="url(#bgGrad)" />
+    <rect width="512" height="512" fill="url(#bottomGlow)" />
+    <rect width="512" height="512" fill="url(#topSheen)" />
+
+    <ellipse cx="256" cy="430" rx="170" ry="10" fill="#000" opacity="0.55" filter="url(#softShadow)" />
+
+    <svg x="56" y="100" width="400" height="298" viewBox="5 -4 150 112" preserveAspectRatio="xMidYMid meet">
+      <rect
+        x="22"
+        y="0"
+        width="116"
+        height="82"
+        rx="4"
+        fill="#0a0e16"
+        stroke="#2a3142"
+        stroke-width="1"
+      />
+      <rect x="26" y="4" width="108" height="68" fill="url(#gScreen)" />
+
+      <g font-family="ui-monospace, SFMono-Regular, monospace" font-size="5">
+        <text x="30" y="13" fill="#4ade80" font-size="6">$ kubectl get nodes</text>
+        <text x="30" y="23" fill="#8a93a6">NAME STATUS ROLE</text>
+        <text x="30" y="31" fill="#cfe6ff">ThinkPad-01 Ready master</text>
+        <text x="30" y="39" fill="#cfe6ff">ThinkPad-02 Ready worker</text>
+        <text x="30" y="47" fill="#cfe6ff">ThinkPad-03 Ready worker</text>
+        <text x="30" y="62" fill="#ff6b35" font-size="6">
+          $
+          <tspan fill="#e6e9ef">_</tspan>
+        </text>
+      </g>
+
+      <text
+        x="130"
+        y="80"
+        text-anchor="end"
+        font-family="ui-monospace, monospace"
+        font-weight="700"
+        font-size="6"
+        fill="#888"
+      >
+        Think
+        <tspan fill="#e63946">P</tspan>
+        ad
+      </text>
+
+      <polygon
+        points="22,82 138,82 150,104 10,104"
+        fill="url(#gKeyboard)"
+        stroke="#2a3142"
+        stroke-width="1"
+      />
+      <rect x="36" y="87" width="88" height="1.5" rx="0.7" fill="#2a3142" />
+      <rect x="38" y="92" width="84" height="1.5" rx="0.7" fill="#2a3142" />
+      <rect x="40" y="97" width="80" height="1.5" rx="0.7" fill="#2a3142" />
+
+      <circle cx="80" cy="93" r="2" fill="#e63946" filter="url(#glow)">
+        <animate
+          attributeName="opacity"
+          values="1;0.35;1"
+          dur="1.8s"
+          repeatCount="indefinite"
+        />
+      </circle>
+      <circle cx="74" cy="100" r="1.2" fill="#4ade80">
+        <animate
+          attributeName="opacity"
+          values="1;0.2;1"
+          dur="2.4s"
+          repeatCount="indefinite"
+        />
+      </circle>
+    </svg>
+
+    <rect
+      x="1.5"
+      y="1.5"
+      width="509"
+      height="509"
+      rx="113.5"
+      ry="113.5"
+      fill="none"
+      stroke="#ffffff"
+      stroke-opacity="0.08"
+      stroke-width="1.5"
+    />
+  </g>
+</svg>

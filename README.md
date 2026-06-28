@@ -214,7 +214,7 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 - 📧 Email: [williamkieu-devops@outlook.com](mailto:williamkieu-devops@outlook.com)
 - 💻 GitHub: [@chu0jz013](https://github.com/chu0jz013)
 - 🔗 LinkedIn: [williamkieuu](https://www.linkedin.com/in/williamkieuu/)
-- 🌐 Website: [williamkieuu-devops.cloud](https://williamkieuu-devops.cloud) <!-- TODO: Use WEBSITE_URL constant from src/utils/constants.ts -->
+- 🌐 Website: [sre.quachuoitrenmay.com](https://sre.quachuoitrenmay.com) <!-- TODO: Use WEBSITE_URL constant from src/utils/constants.ts -->
 
 ---
 
