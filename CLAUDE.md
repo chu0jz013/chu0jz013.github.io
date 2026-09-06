@@ -65,11 +65,12 @@ src/
 │   ├── Spotlight.tsx      ← search overlay (filters across apps + launchpadApps)
 │   ├── dock/              ← Dock.tsx + DockItem.tsx (icon row + hover magnification)
 │   ├── menus/             ← TopBar.tsx, AppleMenu, ControlCenter, Wifi, Battery, base.tsx
-│   └── apps/              ← one file per app: Bear, FaceTime, OldPortfolio, Safari, Terminal, Typora, VSCode
+│   └── apps/              ← one file per app: Bear, FaceTime, Farm, OldPortfolio, Safari, Terminal, Typora, VSCode
 ├── configs/
 │   ├── apps.tsx           ← AppsData[]: every dock/desktop app (id, icon, dimensions, JSX content)
 │   ├── launchpad.ts       ← LaunchpadData[]: launchpad-only entries (external links)
 │   ├── bear.tsx           ← Bear notes structure (markdown file references + links)
+│   ├── farm.tsx           ← Happy Farm: crop stats + EVERY art reference (see below)
 │   ├── terminal.tsx       ← static file-tree shown by `ls`/`cd`/`cat` (NOT command dispatch)
 │   ├── websites.ts        ← Safari bookmarks
 │   ├── music.ts, wallpapers.ts, user.ts
@@ -83,7 +84,8 @@ src/
 ├── utils/constants.ts     ← minMarginY/X, appBarHeight, WEBSITE_URL, RESUME_AS_CODE_URL, BANANAS_SELLS_URL
 └── auto-imports.d.ts      ← generated; do not edit by hand
 public/
-├── img/icons/             ← app icons (PNG). launchpad/ subfolder has portfolio-themed variants
+├── img/icons/             ← app icons (PNG + farm.svg). launchpad/ subfolder has portfolio-themed variants
+├── img/farm/              ← Happy Farm crop sprites (16×16 pixel art as SVG)
 ├── markdown/              ← Bear note content
 ├── old/                   ← static HTML of the previous portfolio (iframe'd by OldPortfolio.tsx)
 └── music/, manifest.json, logo/
@@ -131,6 +133,20 @@ public/
 - Markdown files live in `public/markdown/` and are fetched at runtime by `Bear.tsx`.
 - Section/note icons use Iconify class names (`i-octicon:file`, `i-fa-solid:paw`, `i-ri:gamepad-line`, …) — different system from PNG-based dock icons.
 
+### Farm game (`src/components/apps/Farm.tsx` + `src/configs/farm.tsx`)
+
+- **All art is referenced from `src/configs/farm.tsx`** — nothing visual is hardcoded in the component. Each slot is `{ emoji?, img?, css? }`; `img` wins, then `emoji` / `css`. Changing the art means editing that config, not the JSX.
+- Sprite SVGs live in `public/img/farm/`. **Keep the full `viewBox="0 0 16 16"` — never crop a sprite to its own bounds**, or a seedling gets scaled up to the size of a ripe crop and the growth stages stop reading as growth.
+- `Sprite` takes its size from the caller's `className`. Pass BOTH a width and a font-size utility (`w-7 text-2xl`): the width styles the `<img>` branch, the font-size styles the emoji branch, so one class string works whichever the config holds.
+- Growth runs off wall-clock stamps in `localStorage["farm-save"]`, never a live timer — the window unmounts on close and progress must survive F5. Growth stalls at 50% until the plot is watered. `useInterval(..., 250)` only repaints the bars.
+- The config file is `.tsx`, not `.ts`, **on purpose** — see the UnoCSS gotcha below.
+
+### Toolchain traps (each one silently produced a broken build or blank art)
+
+- **UnoCSS only scans `.tsx`/`.vue`/`.html`, not `.ts`.** A class name that lives only in a `.ts` file never gets generated — the element just renders unstyled, no warning. Config files that carry class strings must be named `.tsx` (`apps.tsx`, `bear.tsx`, `farm.tsx`).
+- **`transformerAttributifyJsx` mangles class strings.** Its regex fails to skip a `className={...}` whose template literal contains parentheses, then appends `=""` to class-like tokens inside your string — which breaks the string and fails the build with a confusing esbuild syntax error. **Never put `( )` inside a `className` template literal**; hoist the expression to a variable above the JSX.
+- **`src/configs/index.ts` → `apps.tsx` → your app component → `src/configs/index.ts` is a cycle.** Destructuring a config at module scope crashes with `Cannot access 'x' before initialization`. Read config inside the component/function body instead, the way `Safari.tsx` and `Terminal.tsx` do.
+
 ### Iframed external sites
 
 - `Safari.tsx` iframes a URL. Used by `old-portfolio`, `resume-as-code`, `bananas-sells-things` entries in `apps.tsx`.
@@ -148,6 +164,9 @@ public/
 | Change window default size | `width`/`height` on the entry in `apps.tsx` |
 | Update dark/light behavior | `src/stores/slices/system.ts` + `src/stores/index.ts` |
 | Old-portfolio static HTML | `public/old/index.html` |
+| Change Farm crop art | `src/configs/farm.tsx` (swap the `img` path) + drop the SVG in `public/img/farm/` |
+| Add a Farm crop | one entry in `farm.crops` (`src/configs/farm.tsx`) + 2 sprites; no component change |
+| Rebalance the Farm economy | `cost` / `growTime` / `price` in `src/configs/farm.tsx` |
 
 ## Things NOT to do
 
@@ -156,6 +175,7 @@ public/
 - Don't "simplify" the `winWidth + ...` / `winWidth * 2 - minMarginX` constants in `AppWindow.tsx` — they exist because the Rnd bounds parent is 3× viewport wide.
 - Don't delete `public/markdown/resume.md`'s link to `https://resumeascode.quachuoitrenmay.com/` — that's the canonical resume target (the old PDF was removed).
 - Don't touch `src/auto-imports.d.ts` — regenerated each build by `unplugin-auto-import`.
+- Don't crop the Farm sprite SVGs to their content, and don't rename `src/configs/farm.tsx` to `.ts` — both break silently (see the Farm and toolchain sections).
 
 ## Build warning
 
