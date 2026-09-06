@@ -1,5 +1,6 @@
 import appsRaw from "./apps";
 import bear from "./bear";
+import farm from "./farm";
 import launchpadAppsRaw from "./launchpad";
 import music from "./music";
 import terminal from "./terminal";
@@ -11,4 +12,4 @@ import websites from "./websites";
 const apps = appsRaw.filter((a) => !a.disabled);
 const launchpadApps = launchpadAppsRaw.filter((a) => !a.disabled);
 
-export { apps, bear, launchpadApps, music, terminal, user, wallpapers, websites };
+export { apps, bear, farm, launchpadApps, music, terminal, user, wallpapers, websites };

@@ -77,6 +77,17 @@ const apps: AppsData[] = [
     content: <Terminal />
   },
   {
+    id: "farm",
+    title: "Happy Farm",
+    desktop: true,
+    width: 620,
+    height: 600,
+    minWidth: 380,
+    minHeight: 420,
+    img: "img/icons/farm.svg",
+    content: <Farm />
+  },
+  {
     id: "old-portfolio",
     title: "Old Portfolio",
     desktop: true,
