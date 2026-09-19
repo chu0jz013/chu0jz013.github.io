@@ -84,7 +84,7 @@ const apps: AppsData[] = [
     height: 600,
     minWidth: 380,
     minHeight: 420,
-    img: "img/icons/farm.svg",
+    img: "img/farm/happy-farm-icon.webp",
     content: <Farm />
   },
   {
