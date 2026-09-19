@@ -84,7 +84,7 @@ src/
 ├── utils/constants.ts     ← minMarginY/X, appBarHeight, WEBSITE_URL, RESUME_AS_CODE_URL, BANANAS_SELLS_URL
 └── auto-imports.d.ts      ← generated; do not edit by hand
 public/
-├── img/icons/             ← app icons (PNG + farm.svg). launchpad/ subfolder has portfolio-themed variants
+├── img/icons/             ← app icons: 256px PNGs on the macOS 27 grid (squircle body 206px at 25,25 + drop shadow). launchpad/ subfolder has portfolio-themed variants
 ├── img/farm/              ← Happy Farm crop sprites (16×16 pixel art as SVG)
 ├── markdown/              ← Bear note content
 ├── old/                   ← static HTML of the previous portfolio (iframe'd by OldPortfolio.tsx)

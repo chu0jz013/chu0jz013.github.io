@@ -5,9 +5,9 @@ import type { AppsData } from "~/types";
 const apps: AppsData[] = [
   {
     id: "launchpad",
-    title: "Launchpad",
+    title: "Apps",
     desktop: false,
-    img: "img/icons/launchpad.png"
+    img: "img/icons/apps.png"
   },
   {
     id: "bear",
@@ -84,7 +84,7 @@ const apps: AppsData[] = [
     height: 600,
     minWidth: 380,
     minHeight: 420,
-    img: "img/farm/happy-farm-icon.webp",
+    img: "img/icons/happy-farm.png",
     content: <Farm />
   },
   {
@@ -138,7 +138,7 @@ const apps: AppsData[] = [
     minHeight: 200,
     x: 0,
     y: 0,
-    img: "img/icons/launchpad/k8s.svg",
+    img: "img/icons/launchpad/k8s.png",
     content: <Safari initialURL={THINKPAD_CLUSTER_URL} />
   },
   {
