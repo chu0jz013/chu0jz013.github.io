@@ -7,12 +7,19 @@ const farm: FarmData = {
   plotCount: 12,
   startCoins: 50,
 
+  // Hit `reward.coins` and the farm hands out a link, opened in the Safari window.
+  // The embed form is required: a youtube.com/watch URL refuses to be framed.
+  reward: {
+    coins: 500,
+    url: "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"
+  },
+
   crops: [
     {
       id: "carrot",
       name: "Carrot",
       cost: 10,
-      growTime: 6000,
+      growTime: 3000,
       price: 20,
       art: {
         seed: { img: "img/farm/seed.svg" },
@@ -21,22 +28,22 @@ const farm: FarmData = {
       }
     },
     {
-      id: "tomato",
-      name: "Tomato",
-      cost: 30,
-      growTime: 15000,
-      price: 75,
+      id: "banana",
+      name: "Banana",
+      cost: 25,
+      growTime: 5000,
+      price: 70,
       art: {
         seed: { img: "img/farm/seed.svg" },
-        sprout: { img: "img/farm/tomato-sprout.svg" },
-        ready: { img: "img/farm/tomato.svg" }
+        sprout: { img: "img/farm/banana-sprout.svg" },
+        ready: { img: "img/farm/banana.svg" }
       }
     },
     {
       id: "corn",
       name: "Corn",
       cost: 80,
-      growTime: 35000,
+      growTime: 10000,
       price: 220,
       art: {
         seed: { img: "img/farm/seed.svg" },
@@ -53,7 +60,9 @@ const farm: FarmData = {
     soil: { css: "bg-[#a97155]" },
     empty: { css: "bg-[#8f5f43] border-2 border-dashed border-white/30" },
     thirsty: { img: "img/farm/drop.svg" },
-    coin: { img: "img/farm/coin.svg" }
+    coin: { img: "img/farm/coin.svg" },
+    gift: { emoji: "🎁" },
+    sparkle: { emoji: "✨" }
   }
 };
 

@@ -13,6 +13,7 @@ export {
   BearData,
   FarmArt,
   FarmCrop,
+  FarmReward,
   FarmSceneArt,
   FarmData,
   LaunchpadData,

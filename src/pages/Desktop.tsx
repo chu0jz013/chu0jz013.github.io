@@ -1,6 +1,6 @@
 import React from "react";
 import { apps, wallpapers } from "~/configs";
-import { minMarginY } from "~/utils";
+import { deepLinkApp, minMarginY } from "~/utils";
 import type { MacActions } from "~/types";
 
 interface DesktopState {
@@ -44,7 +44,13 @@ export default function Desktop(props: MacActions) {
     brightness: state.brightness
   }));
 
+  const safariURL = useStore((state) => state.safariURL);
+
   const getAppsData = (): void => {
+    // a deep link like /happy-farm opens that one window and nothing else, so
+    // the game arrives on a clean desktop instead of behind the usual Bear note
+    const deepApp = apps.find((app) => app.id === deepLinkApp());
+
     let showApps = {},
       appsZ = {},
       maxApps = {},
@@ -53,7 +59,7 @@ export default function Desktop(props: MacActions) {
     apps.forEach((app) => {
       showApps = {
         ...showApps,
-        [app.id]: !!app.show
+        [app.id]: deepApp ? app.id === deepApp.id : !!app.show
       };
       appsZ = {
         ...appsZ,
@@ -69,7 +75,14 @@ export default function Desktop(props: MacActions) {
       };
     });
 
-    setState({ ...state, showApps, appsZ, maxApps, minApps });
+    setState({
+      ...state,
+      showApps,
+      appsZ,
+      maxApps,
+      minApps,
+      currentTitle: deepApp ? deepApp.title : state.currentTitle
+    });
   };
 
   useEffect(() => {
@@ -162,6 +175,12 @@ export default function Desktop(props: MacActions) {
   };
 
   const openApp = (id: string): void => {
+    // react-draggable hands us onMouseDown for touchstart too, so every tap
+    // inside a window lands here. Re-rendering the Desktop mid-gesture costs the
+    // tap its click on iOS, so the already-focused case has to do nothing.
+    if (state.showApps[id] && !state.minApps[id] && state.appsZ[id] === state.maxZ)
+      return;
+
     // add it to the shown app list
     const showApps = state.showApps;
     showApps[id] = true;
@@ -201,6 +220,11 @@ export default function Desktop(props: MacActions) {
       setState({ ...state, minApps });
     }
   };
+
+  // an app window (Happy Farm's reward) asked for a page: bring Safari up front
+  useEffect(() => {
+    if (safariURL) openApp("safari");
+  }, [safariURL]);
 
   const renderAppWindows = () => {
     return apps.map((app) => {

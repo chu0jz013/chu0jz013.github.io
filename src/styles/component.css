@@ -118,3 +118,20 @@
 .switch-toggle input:focus + .slider-toggle {
   box-shadow: 0 0 1px #3b82f6;
 }
+
+/* Happy Farm plots. A :hover rule that changes what is painted costs a touch
+   user their first tap — the browser spends it entering the hover state and
+   never dispatches the click — so planting needed two taps on a phone. */
+.farm-plot {
+  touch-action: manipulation;
+}
+
+@media (hover: none) {
+  .farm-plot:hover {
+    transform: none;
+  }
+
+  .farm-plot:hover .farm-seed-preview {
+    opacity: 0;
+  }
+}

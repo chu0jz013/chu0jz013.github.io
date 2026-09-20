@@ -23,11 +23,19 @@ export interface FarmSceneArt {
   empty: FarmArt;
   thirsty: FarmArt;
   coin: FarmArt;
+  gift: FarmArt; // the locked chip, and the box that gets unwrapped
+  sparkle: FarmArt; // one burst particle, drawn a dozen times
+}
+
+export interface FarmReward {
+  coins: number; // coin balance that unlocks the reward
+  url: string; // opened in the desktop's Safari window when claimed
 }
 
 export interface FarmData {
   plotCount: number;
   startCoins: number;
+  reward: FarmReward;
   crops: FarmCrop[];
   scene: FarmSceneArt;
 }

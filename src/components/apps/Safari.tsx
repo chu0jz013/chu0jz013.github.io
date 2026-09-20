@@ -134,10 +134,21 @@ const NoInternetPage = () => {
 
 const Safari = ({ width, initialURL }: SafariProps) => {
   const wifi = useStore((state) => state.wifi);
+  const safariURL = useStore((state) => state.safariURL);
+  const clearSafariURL = useStore((state) => state.clearSafariURL);
   const [state, setState] = useState<SafariState>({
     goURL: initialURL || "",
     currentURL: initialURL || ""
   });
+
+  // Only the plain Safari window answers open-URL requests from other apps; the
+  // windows built around a fixed `initialURL` keep the page they were opened for.
+  // The URL goes in verbatim, the way `initialURL` does: no search rewriting.
+  useEffect(() => {
+    if (initialURL || !safariURL) return;
+    setState({ goURL: safariURL, currentURL: safariURL });
+    clearSafariURL();
+  }, [safariURL]);
 
   const setGoURL = (url: string) => {
     const isValid = checkURL(url);
@@ -214,6 +225,7 @@ const Safari = ({ width, initialURL }: SafariProps) => {
           <iframe
             title={"Safari clone browser"}
             src={state.goURL}
+            allow="autoplay; encrypted-media; picture-in-picture"
             className="safari-content w-full bg-white"
           />
         )

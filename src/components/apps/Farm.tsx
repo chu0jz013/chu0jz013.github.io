@@ -13,6 +13,7 @@ interface PlotData {
 interface FarmSave {
   coins: number;
   plots: PlotData[];
+  rewarded: boolean; // the reward is claimable once per farm; Reset re-locks it
 }
 
 interface Gain {
@@ -30,7 +31,8 @@ const emptyPlot = (): PlotData => ({ crop: null, plantedAt: 0, wateredAt: 0 });
 
 const emptyFarm = (): FarmSave => ({
   coins: farm.startCoins,
-  plots: Array.from({ length: farm.plotCount }, emptyPlot)
+  plots: Array.from({ length: farm.plotCount }, emptyPlot),
+  rewarded: false
 });
 
 const loadFarm = (): FarmSave => {
@@ -43,7 +45,7 @@ const loadFarm = (): FarmSave => {
         Array.isArray(save.plots) &&
         save.plots.length === farm.plotCount
       )
-        return save;
+        return { coins: save.coins, plots: save.plots, rewarded: !!save.rewarded };
     }
   } catch {
     // no save yet, or a broken one: start a fresh farm
@@ -128,7 +130,7 @@ const Plot = ({ plot, seed, affordable, gain, onClick, onGainEnd }: PlotProps) =
 
   return (
     <button
-      className={`group relative aspect-square rounded-lg flex-center text-4xl no-outline transition-transform duration-150 bg-cover bg-center ${tileCss} ${
+      className={`farm-plot group relative aspect-square rounded-lg flex-center text-4xl no-outline transition-transform duration-150 bg-cover bg-center ${tileCss} ${
         ready ? "ring-2 ring-yellow-300" : ""
       } ${
         clickable ? "hover:scale-105" : planted ? "cursor-default" : "cursor-not-allowed"
@@ -143,7 +145,7 @@ const Plot = ({ plot, seed, affordable, gain, onClick, onGainEnd }: PlotProps) =
       {!planted && affordable && (
         <Sprite
           art={seed.art.ready}
-          className="w-1/2 text-3xl opacity-0 transition-opacity group-hover:opacity-40"
+          className="farm-seed-preview w-1/2 text-3xl opacity-0 transition-opacity group-hover:opacity-40"
         />
       )}
 
@@ -181,16 +183,137 @@ const Plot = ({ plot, seed, affordable, gain, onClick, onGainEnd }: PlotProps) =
   );
 };
 
+// Twelve particles thrown evenly around the box when it pops.
+const SPARKS = Array.from({ length: 12 }, (_, i) => {
+  const angle = (i / 12) * Math.PI * 2;
+  return { x: Math.cos(angle) * 96, y: Math.sin(angle) * 96 };
+});
+
+interface RewardBarProps {
+  art: FarmArt;
+  unlocked: boolean;
+  coins: number;
+  target: number;
+  onClick: () => void;
+}
+
+// A whole row rather than a chip: a first-time visitor has to be able to see
+// that something is there to win. Locked it is a goal with a meter, unlocked it
+// is a gift worth tapping. It reads the same on a 380px phone window.
+const RewardBar = ({ art, unlocked, coins, target, onClick }: RewardBarProps) => {
+  if (!unlocked) {
+    const filled = Math.min(100, (coins / target) * 100);
+    return (
+      <div className="px-3 py-1.5 border-b border-c-300 bg-c-200">
+        <div className="hstack justify-between text-xs text-c-500">
+          <span className="hstack space-x-1.5">
+            <Sprite art={art} className="w-4 text-sm opacity-50 grayscale" />
+            <span className="font-semibold tracking-wide">REWARD</span>
+          </span>
+          <span className="font-semibold">
+            {coins}/{target}
+          </span>
+        </div>
+        <span className="block mt-1 h-1.5 rounded-full bg-black/20">
+          <span
+            className="block h-full rounded-full bg-gradient-to-r from-amber-300 to-yellow-400 transition-[width] duration-300"
+            style={{ width: `${filled}%` }}
+          />
+        </span>
+      </div>
+    );
+  }
+
+  return (
+    <motion.button
+      className="relative w-full overflow-hidden px-3 py-2 border-b border-yellow-500/40 no-outline text-yellow-900 bg-gradient-to-r from-amber-200 via-yellow-300 to-amber-400 shadow-lg shadow-yellow-400/50"
+      animate={{ scale: [1, 1.02, 1] }}
+      transition={{ duration: 1.6, repeat: Infinity }}
+      onClick={onClick}
+    >
+      {/* a shine sweeping the length of the bar */}
+      <motion.span
+        className="absolute inset-y-0 w-10 bg-white/60 blur-md"
+        animate={{ x: [-60, 680] }}
+        transition={{ duration: 1.6, repeat: Infinity, repeatDelay: 0.6 }}
+      />
+      <span className="relative hstack justify-center space-x-2 text-sm font-bold">
+        <motion.span
+          animate={{ rotate: [0, -12, 12, 0] }}
+          transition={{ duration: 1.2, repeat: Infinity }}
+        >
+          <Sprite art={art} className="w-5 text-base" />
+        </motion.span>
+        <span>Open your gift</span>
+      </span>
+    </motion.button>
+  );
+};
+
+interface UnboxProps {
+  gift: FarmArt;
+  sparkle: FarmArt;
+  onOpened: () => void;
+}
+
+// The box shakes, swells, then bursts. `onAnimationComplete` is what actually
+// hands out the reward, the same way a floating +coins gain ends itself.
+const Unbox = ({ gift, sparkle, onOpened }: UnboxProps) => (
+  <motion.div
+    className="absolute inset-0 z-20 flex-center bg-black/60 backdrop-blur-sm"
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.2 }}
+  >
+    <motion.span
+      className="absolute size-40 rounded-full bg-yellow-300/50 blur-2xl"
+      animate={{ scale: [0.5, 1.3, 2.6], opacity: [0.3, 0.9, 0] }}
+      transition={{ duration: 1.2 }}
+    />
+
+    {SPARKS.map((spark, i) => (
+      <motion.span
+        className="absolute pointer-events-none"
+        key={i}
+        initial={{ opacity: 0, scale: 0 }}
+        animate={{
+          x: spark.x,
+          y: spark.y,
+          opacity: [0, 1, 0],
+          scale: [0, 1.3, 0.4]
+        }}
+        transition={{ duration: 0.8, delay: 0.6 + i * 0.02 }}
+      >
+        <Sprite art={sparkle} className="w-5 text-lg" />
+      </motion.span>
+    ))}
+
+    <motion.div
+      animate={{
+        rotate: [0, -12, 12, -10, 10, 0, 0],
+        scale: [0.7, 1, 1, 1, 1, 1.45, 0]
+      }}
+      transition={{ duration: 1.25, times: [0, 0.12, 0.24, 0.36, 0.48, 0.78, 1] }}
+      onAnimationComplete={onOpened}
+    >
+      <Sprite art={gift} className="w-24 text-7xl drop-shadow-lg" />
+    </motion.div>
+  </motion.div>
+);
+
 const Farm = () => {
-  const { crops, scene } = farm;
+  const { crops, reward, scene } = farm;
   const [save, setSave] = useState<FarmSave>(loadFarm);
   const [selected, setSelected] = useState(crops[0].id);
   const [gain, setGain] = useState<Gain | null>(null);
+  const [opening, setOpening] = useState(false);
   const [, setTick] = useState(0);
+  const openInSafari = useStore((state) => state.openInSafari);
 
-  const { coins, plots } = save;
+  const { coins, plots, rewarded } = save;
   const seed = cropOf(selected) as FarmCrop;
   const fieldCss = scene.background.img ? "" : scene.background.css || "";
+  const unlocked = coins >= reward.coins;
 
   // crops grow against the clock, this only repaints the progress bars
   useInterval(() => setTick((tick) => tick + 1), 250);
@@ -198,7 +321,13 @@ const Farm = () => {
   useEffect(() => saveFarm(save), [save]);
 
   const replacePlot = (index: number, plot: PlotData, coins: number) =>
-    setSave({ coins, plots: plots.map((p, i) => (i === index ? plot : p)) });
+    setSave({ ...save, coins, plots: plots.map((p, i) => (i === index ? plot : p)) });
+
+  const openGift = () => {
+    openInSafari(reward.url);
+    setOpening(false);
+    setSave({ ...save, rewarded: true });
+  };
 
   const clickPlot = (index: number) => {
     const plot = plots[index];
@@ -220,7 +349,7 @@ const Farm = () => {
   };
 
   return (
-    <div className="h-full flex flex-col text-c-black bg-c-100">
+    <div className="relative h-full flex flex-col text-c-black bg-c-100">
       <div className="hstack justify-between px-3 py-1.5 text-sm border-b border-c-300">
         <span className="hstack space-x-1 font-semibold">
           <Sprite art={scene.coin} className="w-4" />
@@ -241,6 +370,16 @@ const Farm = () => {
           Reset
         </button>
       </div>
+
+      {!rewarded && (
+        <RewardBar
+          art={scene.gift}
+          unlocked={unlocked}
+          coins={coins}
+          target={reward.coins}
+          onClick={() => setOpening(true)}
+        />
+      )}
 
       <div
         className={`flex-1 overflow-y-auto p-3 bg-cover bg-center ${fieldCss}`}
@@ -280,6 +419,8 @@ const Farm = () => {
           </button>
         ))}
       </div>
+
+      {opening && <Unbox gift={scene.gift} sparkle={scene.sparkle} onOpened={openGift} />}
     </div>
   );
 };

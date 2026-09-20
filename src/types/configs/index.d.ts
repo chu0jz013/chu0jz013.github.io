@@ -1,6 +1,6 @@
 export { AppsData } from "./apps";
 export { BearMdData, BearData } from "./bear";
-export { FarmArt, FarmCrop, FarmSceneArt, FarmData } from "./farm";
+export { FarmArt, FarmCrop, FarmReward, FarmSceneArt, FarmData } from "./farm";
 export { LaunchpadData } from "./launchpad";
 export { MusicData } from "./music";
 export { TerminalData } from "./terminal";
