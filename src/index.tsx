@@ -5,7 +5,7 @@ import Desktop from "~/pages/Desktop";
 import Login from "~/pages/Login";
 import Boot from "~/pages/Boot";
 import OldPortfolio from "~/components/apps/OldPortfolio";
-import { deepLinkApp } from "~/utils";
+import { deepLinkApp, hasBooted, markBooted } from "~/utils";
 
 import "@unocss/reset/tailwind.css";
 import "uno.css";
@@ -16,8 +16,14 @@ export default function App() {
   // a deep link such as /happy-farm goes straight into the app it names; the
   // login screen is cosmetic (the configured password is empty), so skipping it
   // bypasses nothing
-  const [login, setLogin] = useState<boolean>(deepLinkApp() !== null);
-  const [booting, setBooting] = useState<boolean>(false);
+  const deepLinked = deepLinkApp() !== null;
+  const [login, setLogin] = useState<boolean>(deepLinked);
+
+  // someone who has never opened the site watches the machine boot itself first.
+  // A deep link is a shortcut into one app, so it skips the ceremony entirely.
+  const firstVisit = !hasBooted() && !deepLinked;
+  const [booting, setBooting] = useState<boolean>(firstVisit);
+  const [autoBoot, setAutoBoot] = useState<boolean>(firstVisit);
   const [restart, setRestart] = useState<boolean>(false);
   const [sleep, setSleep] = useState<boolean>(false);
 
@@ -59,7 +65,20 @@ export default function App() {
   };
 
   if (booting) {
-    return <Boot restart={restart} sleep={sleep} setBooting={setBooting} />;
+    return (
+      <Boot
+        restart={restart}
+        sleep={sleep}
+        auto={autoBoot}
+        setBooting={(value) => {
+          markBooted();
+          // only the opening boot runs itself; Shut Down and Sleep still wait
+          // for a click, the way a real machine does
+          setAutoBoot(false);
+          setBooting(value);
+        }}
+      />
+    );
   } else if (login) {
     return (
       <Desktop

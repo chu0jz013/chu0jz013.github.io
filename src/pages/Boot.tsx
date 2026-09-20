@@ -1,19 +1,20 @@
 interface BootProps {
   restart: boolean;
   sleep: boolean;
+  auto?: boolean; // start the progress bar instead of waiting to be clicked
   setBooting: (value: boolean | ((prevVar: boolean) => boolean)) => void;
 }
 
 const loadingInterval = 1;
 const bootingInterval = 500;
 
-export default function Boot({ restart, sleep, setBooting }: BootProps) {
+export default function Boot({ restart, sleep, auto, setBooting }: BootProps) {
   const [loading, setLoading] = useState<boolean>(false);
   const [percent, setPercent] = useState<number>(0);
 
   useEffect(() => {
-    if (restart && !sleep) setLoading(true);
-  }, [restart, sleep]);
+    if ((restart || auto) && !sleep) setLoading(true);
+  }, [restart, sleep, auto]);
 
   useInterval(
     () => {
@@ -50,7 +51,7 @@ export default function Boot({ restart, sleep, setBooting }: BootProps) {
           />
         </div>
       )}
-      {!restart && !loading && (
+      {!restart && !auto && !loading && (
         <div
           pos="absolute top-1/2 inset-x-0"
           m="t-16 sm:t-20 x-auto"
