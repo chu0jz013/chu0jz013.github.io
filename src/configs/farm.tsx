@@ -7,11 +7,14 @@ const farm: FarmData = {
   plotCount: 12,
   startCoins: 50,
 
-  // Hit `reward.coins` and the farm hands out a link, opened in the Safari window.
-  // The embed form is required: a youtube.com/watch URL refuses to be framed.
+  // Hit `reward.coins` and the farm hands out a link. On a desktop it plays in
+  // the Safari window, which needs the embed form — a youtube.com/watch URL
+  // refuses to be framed. A phone gets the watch URL as a real tab instead,
+  // because no iframe is allowed to autoplay there.
   reward: {
     coins: 500,
-    url: "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&playsinline=1"
+    url: "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&playsinline=1",
+    mobileUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
   },
 
   crops: [

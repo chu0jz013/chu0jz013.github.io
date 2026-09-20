@@ -330,13 +330,18 @@ const Farm = () => {
     setSave({ ...save, rewarded: true });
   };
 
-  // A phone only lets a video start playing from inside the tap that asked for
-  // it, and the unboxing spends that tap: by the time the animation ends the
-  // gesture is gone and the player just sits there. So on mobile the gift opens
-  // straight into the video, and the ceremony stays a desktop luxury.
+  // A phone refuses to autoplay a video inside an iframe whatever we do, so
+  // there the reward hands itself to YouTube instead: a real tab (or the app),
+  // where playback is the platform's own business. Opening it inside the tap is
+  // what keeps the popup blocker out of the way. The unboxing and the in-desktop
+  // Safari window stay a desktop luxury.
   const claimReward = () => {
-    if (winWidth < 640) openGift();
-    else setOpening(true);
+    if (winWidth < 640) {
+      window.open(reward.mobileUrl, "_blank", "noopener");
+      setSave({ ...save, rewarded: true });
+      return;
+    }
+    setOpening(true);
   };
 
   const clickPlot = (index: number) => {

@@ -29,7 +29,8 @@ export interface FarmSceneArt {
 
 export interface FarmReward {
   coins: number; // coin balance that unlocks the reward
-  url: string; // opened in the desktop's Safari window when claimed
+  url: string; // embedded in the desktop's Safari window when claimed
+  mobileUrl: string; // opened as a real tab on a phone, where iframes cannot autoplay
 }
 
 export interface FarmData {
