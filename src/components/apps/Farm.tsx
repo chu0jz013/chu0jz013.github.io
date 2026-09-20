@@ -309,6 +309,7 @@ const Farm = () => {
   const [opening, setOpening] = useState(false);
   const [, setTick] = useState(0);
   const openInSafari = useStore((state) => state.openInSafari);
+  const { winWidth } = useWindowSize();
 
   const { coins, plots, rewarded } = save;
   const seed = cropOf(selected) as FarmCrop;
@@ -327,6 +328,15 @@ const Farm = () => {
     openInSafari(reward.url);
     setOpening(false);
     setSave({ ...save, rewarded: true });
+  };
+
+  // A phone only lets a video start playing from inside the tap that asked for
+  // it, and the unboxing spends that tap: by the time the animation ends the
+  // gesture is gone and the player just sits there. So on mobile the gift opens
+  // straight into the video, and the ceremony stays a desktop luxury.
+  const claimReward = () => {
+    if (winWidth < 640) openGift();
+    else setOpening(true);
   };
 
   const clickPlot = (index: number) => {
@@ -377,7 +387,7 @@ const Farm = () => {
           unlocked={unlocked}
           coins={coins}
           target={reward.coins}
-          onClick={() => setOpening(true)}
+          onClick={claimReward}
         />
       )}
 

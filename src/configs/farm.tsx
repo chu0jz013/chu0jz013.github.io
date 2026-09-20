@@ -11,7 +11,7 @@ const farm: FarmData = {
   // The embed form is required: a youtube.com/watch URL refuses to be framed.
   reward: {
     coins: 500,
-    url: "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"
+    url: "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&playsinline=1"
   },
 
   crops: [
